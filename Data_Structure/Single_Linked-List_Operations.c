@@ -24,21 +24,25 @@ int Length_of_list(void);
 void Add_Node_to_Beginning(void);
 void Display_Linked_list(void);
 void Add_Node_After_Specified_Node(void);
+void Delete_First_Node_of_List(void);
+void Delete_Specific_Node_of_List(void);
 
 int main()
 {
 
     int ch;
     while(1){
-       printf("Single Linked List Operations : \n");
-       printf("1.Append Node to List\n");
-       printf("2.Add Node to Beginning of List\n");
-       printf("3.Find Length of List\n");
-       printf("4.Display Elements of Linked List\n");
-       printf("5.Add Node After Specified Location\n");
+       printf("SINGLE LINKED LIST OPERATIONS : \n");
+       printf("1.APPEND NODE TO LIST\n");
+       printf("2.ADD NODE TO BEGINNING OF LIST\n");
+       printf("3.FIND LENGTH OF LIST\n");
+       printf("4.DISPLAY ELEMENTS OF LINKED LIST\n");
+       printf("5.ADD NODE AFTER SPECIFIED LOCATION\n");
+       printf("6.DELETE FIRST NODE OF LIST\n");
+       printf("7.DELETE SPECIFIC NODE OF LIST\n");
        printf("11.Quit\n");
 
-       printf("Enter your choice :");
+       printf("\n\nEnter your choice :");
        scanf("%d", &ch);
        int Length = 0;
 
@@ -53,6 +57,10 @@ int main()
             case 4: Display_Linked_list();
                     break;
             case 5: Add_Node_After_Specified_Node();
+                    break;
+            case 6: Delete_First_Node_of_List();
+                    break;
+            case 7: Delete_Specific_Node_of_List();
                     break;
             case 11: exit(1);
             
@@ -123,10 +131,12 @@ void Display_Linked_list(void)
     struct node* temp;
     int count = 1;
     temp = root;
+    int length = Length_of_list();
     while(temp != NULL){
         printf("%d Element of list is: %d\n", count, temp->data);
         count++;
         temp = temp->link;
+        if(count > length+1){exit(1);}
     }
     printf("\n");
 }
@@ -151,11 +161,39 @@ void Add_Node_After_Specified_Node(void)
         scanf("%d", &new_node->data);
         new_node->link = NULL;
         int i = 1;
-        while(i<=position){
+        while(i < position-1){
             temp = temp->link;
             i++;
         }
-        new_node->link = temp;
+        new_node->link = temp->link;
         temp->link = new_node;
     }
+}
+
+void Delete_First_Node_of_List(void)
+{
+    struct node* temp;
+    temp = root;
+    root = temp->link;
+    temp->link = NULL;
+    free(temp);
+}
+
+void Delete_Specific_Node_of_List(void){
+    struct node* temp;
+    struct node* p = NULL;
+    temp = root;
+    int position;
+    int length = Length_of_list();
+    printf("\nlength of list is: %d\n", length);
+    printf("Enter the node number you want to delete: ");
+    scanf("%d", &position);
+
+    for(int i =1; i<(position-1); i++){
+        temp = temp->link;
+    }
+    p = temp->link;
+    temp->link = p->link;
+    p->link = NULL;
+    free(p);
 }
