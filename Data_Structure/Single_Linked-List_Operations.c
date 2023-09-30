@@ -26,6 +26,10 @@ void Display_Linked_list(void);
 void Add_Node_After_Specified_Node(void);
 void Delete_First_Node_of_List(void);
 void Delete_Specific_Node_of_List(void);
+void Swap_Node(void);
+struct node* position_node(int position);
+void Reverse_Linked_List(void);
+void Memory_Cleanup(void);
 
 int main()
 {
@@ -40,6 +44,8 @@ int main()
        printf("5.ADD NODE AFTER SPECIFIED LOCATION\n");
        printf("6.DELETE FIRST NODE OF LIST\n");
        printf("7.DELETE SPECIFIC NODE OF LIST\n");
+       printf("8.SWAPPING ANY 2 NODES\n");
+       printf("9.REVERSE LINKED LIST\n");
        printf("11.Quit\n");
 
        printf("\n\nEnter your choice :");
@@ -62,7 +68,12 @@ int main()
                     break;
             case 7: Delete_Specific_Node_of_List();
                     break;
-            case 11: exit(1);
+            case 8: Swap_Node();
+                    break;
+            case 9: Reverse_Linked_List();
+                    break;
+            case 11:Memory_Cleanup();
+                    exit(1);
             
             default: printf("Invalid input\n\n");
 
@@ -70,7 +81,8 @@ int main()
     }
 }
 
-void Append_node_to_list(void){
+void Append_node_to_list(void)
+{
 
     struct node* temp;
 
@@ -179,7 +191,8 @@ void Delete_First_Node_of_List(void)
     free(temp);
 }
 
-void Delete_Specific_Node_of_List(void){
+void Delete_Specific_Node_of_List(void)
+{
     struct node* temp;
     struct node* p = NULL;
     temp = root;
@@ -196,4 +209,74 @@ void Delete_Specific_Node_of_List(void){
     temp->link = p->link;
     p->link = NULL;
     free(p);
+}
+
+void Swap_Node(void)
+{
+    int pos_1, pos_2;
+    printf("\nEnter the two Node location you want to swap: ");
+    scanf("%d \t %d", &pos_1, &pos_2);
+
+    struct node *P1_n, *P2_n, *P1_before_n, *P2_before_n;
+
+    P1_before_n = position_node(pos_1);
+    P1_n = P1_before_n->link;
+
+    //printf("\nOne Before Position-1 Node data is: %d", P1_before_n->data);
+    //printf("\n Position-1 Node data is: %d", P1_n->data);
+
+    printf("\n");
+
+    P2_before_n = position_node(pos_2);
+    P2_n = P2_before_n->link;
+
+    //printf("\nOne Before Position-2 Node data is: %d", P2_before_n->data);
+    //printf("\n Position-2 Node data is: %d", P2_n->data);  
+
+    P1_before_n->link = P2_n;
+    P2_before_n->link = P1_n;
+
+    struct node *temp_swap;
+    temp_swap = P1_n->link;
+
+    P1_n->link = P2_n->link;
+    P2_n->link = temp_swap;
+}
+
+struct node* position_node(int position)
+{
+    struct node* temp;
+    temp = root;
+
+    for(int i=1; i<(position-1); i++){
+        temp = temp->link;
+    }
+    return temp;
+}
+
+void Reverse_Linked_List(void)
+{
+    struct node *previous_node = NULL;
+    struct node *current_node = root;
+    struct node *next_node = NULL;
+
+    while(current_node != NULL){
+        next_node = current_node->link;
+
+        current_node->link = previous_node;
+
+        previous_node = current_node;
+
+        current_node = next_node;
+    }
+    root = previous_node;
+}
+
+void Memory_Cleanup(void)
+{
+    while(root != NULL){
+        struct node* temp = root;
+        root = root->link;
+        free(temp);
+    }
 }
