@@ -8,8 +8,11 @@ struct node{
 struct node* root = NULL;
 
 void Swap_Node(void);
+struct node* position_node(int position);
+void Display_List(void);
 
-int main(){
+int main()
+{
 
     int i = 0;
     while(i <= 5){
@@ -29,31 +32,71 @@ int main(){
         p = temp;
         i++;
     }
-    struct node* temp;
-    temp = root;
-    printf("Data of list is:");
-    while(temp != NULL){
-        printf("\t%d\t", temp->data);
-        temp = temp->link;
-    }
+
+    printf("\nData of List Before Swapping\n");
+    Display_List();
+
     Swap_Node();
+
+    printf("\n Data of List after swapping 2 random nodes\n");
+    Display_List();
+
+    while(root != NULL){
+        struct node* temp = root;
+        root = root->link;
+        free(temp);
+    }
 }
 
 void Swap_Node(void)
 {
     int pos_1, pos_2;
-    printf("\nEnter the two Node location you want to swap: \t");
+    printf("\nEnter the two Node location you want to swap: ");
     scanf("%d \t %d", &pos_1, &pos_2);
+
+    struct node *P1_n, *P2_n, *P1_before_n, *P2_before_n;
+
+    P1_before_n = position_node(pos_1);
+    P1_n = P1_before_n->link;
+
+    printf("\nOne Before Position-1 Node data is: %d", P1_before_n->data);
+    printf("\n Position-1 Node data is: %d", P1_n->data);
+
+    printf("\n");
+
+    P2_before_n = position_node(pos_2);
+    P2_n = P2_before_n->link;
+
+    printf("\nOne Before Position-2 Node data is: %d", P2_before_n->data);
+    printf("\n Position-2 Node data is: %d", P2_n->data);  
+
+    P1_before_n->link = P2_n;
+    P2_before_n->link = P1_n;
+
+    struct node *temp_swap;
+    temp_swap = P1_n->link;
+
+    P1_n->link = P2_n->link;
+    P2_n->link = temp_swap;
+}
+
+struct node* position_node(int position)
+{
     struct node* temp;
     temp = root;
-    for(int i =1; i<pos_1; i++){
-        temp = temp->link;
-    }
-    temp = root;
-    printf("%d Node Data is; %d\n", pos_1, temp->data);
-    for(int i=1; i<pos_2; i++){
-        temp = temp->link;
-    }
-    printf("%d Node Data is: %d\t", pos_2, temp->data);
 
+    for(int i=1; i<(position-1); i++){
+        temp = temp->link;
+    }
+    return temp;
+}
+
+void Display_List(void){
+    struct node* temp;
+    temp = root;
+    printf("\nData of list is:");
+    while(temp != NULL){
+        printf("\t%d\t", temp->data);
+        temp = temp->link;
+    }
 }
