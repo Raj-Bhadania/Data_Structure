@@ -19,7 +19,7 @@ int top = -1;
 // if we pass regular global variable into creation of stack which is also same for array 
 // then it will not work
 
-void Push_element_into_Stack(int element);
+void Push_element_into_Stack(void);
 int Pop_element_from_Stack();
 int Peek_Element_of_Stack(void);
 void Traverse_Through_Element_of_Stack(void);
@@ -50,9 +50,7 @@ int main()
         int Poped_element, Peek_element;
 
         switch(ch){
-            case 1: printf("Enter Element value you want to enter: ");
-                    scanf("%d", &element);
-                    Push_element_into_Stack(element);
+            case 1: Push_element_into_Stack();
                     break; 
             case 2: Poped_element = Pop_element_from_Stack();
                     printf("Element %d got poped\n", Poped_element);
@@ -78,7 +76,7 @@ int main()
     }
 }
 
-void Push_element_into_Stack(int element)
+void Push_element_into_Stack(void)
 {
     if(Is_Full())
     {
@@ -86,6 +84,9 @@ void Push_element_into_Stack(int element)
         printf("Stack is Full\n\n");
     }
     else{
+        int element;
+        printf("Enter Element value you want to enter: ");
+        scanf("%d", &element);
         top++;
         Stack[top] = element;
         printf("%d Inserted into Stack\n", element);
@@ -102,8 +103,7 @@ int Pop_element_from_Stack(void)
     }
     else
     {
-        return Stack[top];
-        top--;
+        return Stack[top--];
     }
 }
 
