@@ -75,6 +75,8 @@ void Swap_Node(void)
 
     struct node *temp_swap;
     temp_swap = P1_n->link;
+    // make sure to give p1n link as if p2n link might be NULL if we try to swap last node
+    // that will break link to further nodes
 
     P1_n->link = P2_n->link;
     P2_n->link = temp_swap;
